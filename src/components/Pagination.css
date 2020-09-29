@@ -1,0 +1,20 @@
+.pagination {
+    margin: 10px auto;
+}
+
+.pagination li {
+    display: inline-block;
+    margin-right: 2px;
+}
+
+.pagination li:hover,
+.pagination li.active {
+    background-color: lightgray;
+}
+
+.pagination a {
+    display: block;
+    padding: 5px;
+    border: 1px solid grey;
+    cursor: pointer
+}

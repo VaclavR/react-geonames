@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react'
-import { Country } from '../interfaces'
 interface Listener {
     (source: Record<string, unknown>): void;
 }
 
 export interface Dispatch {
-    (actionIdentifier: string, payload: Record<string, Country[]>): void
+    (actionIdentifier: string, payload: any): void
 }
 
 interface Action {
-    (globalsState: Record<string, unknown>, payload: Record<string, unknown>): Record<string, unknown>
+    (globalsState: Record<string, any>, payload: any): Record<string, unknown>
 }
 
 let globalState: Record<string, unknown> = {}

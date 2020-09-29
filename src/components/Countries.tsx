@@ -1,17 +1,8 @@
 import React, { useState } from 'react'
 import CountryRow from './CountryRow'
-import { Country } from '../interfaces'
-import CSS from 'csstype'
-
-interface CountriesProps {
-    countries: Country[]
-}
-const thStyles: CSS.Properties = {
-    textAlign: 'left',
-    paddingRight: '5px',
-    borderBottom: '1px solid black',
-    cursor: 'pointer'
-}
+import { useStore } from '../store/store'
+import { Country, CountriesProps } from '../interfaces'
+import styles from './Countries.css'
 
 const tableHeadersData = [
     {
@@ -43,49 +34,41 @@ const tableHeadersData = [
         name: 'Area',
         propName: 'areaInSqKm',
         type: 'number'
+    },
+    {
+        name: 'Density',
+        propName: 'density',
+        type: 'number'
     }
 ]
 
 const Countries = (props: CountriesProps): JSX.Element => {
-    console.log('countries render')
-    const [countries, setCountries] = useState(props.countries)
+    const [state, dispatch] = useStore()
+    const countries = state.paginatedCountries as Country[]
     const [sortDirectionDesc, setSortDirection] = useState(false)
     const [sortField, setSortField] = useState('countryCode')
 
     const sortingHandler = (header: Record<string, string>): void => {
         setSortField(header.propName)
-        let sortedCountries: Country[]
-        if (sortDirectionDesc) {
-            if (header.type === 'number') {
-                sortedCountries = [...countries.sort((a, b) => +a[header.propName] - +b[header.propName])]
-            } else {
-                sortedCountries = [...countries.sort((a, b) => +(a[header.propName] > b[header.propName]) - +(a[header.propName] < b[header.propName]))]
-            }
-        } else {
-            if (header.type === 'number') {
-                sortedCountries = [...countries.sort((a, b) => +b[header.propName] - +a[header.propName])]
-            } else {
-                sortedCountries = [...countries.sort((a, b) => +(a[header.propName] < b[header.propName]) - +(a[header.propName] > b[header.propName]))]
-            }
-        }
+        dispatch('SORT_COUNTRIES', {header, sortDirectionDesc})
         setSortDirection(!sortDirectionDesc)
-        setCountries(sortedCountries)
+        props.saveSortingValues(header, sortDirectionDesc)
     }
     const tableHeaders = tableHeadersData.map((header) => {
         const claret = header.propName === sortField ? sortDirectionDesc ? '↑' : '↓' : '\u00A0\u00A0'
-        return <th key={header.name} style={thStyles} onClick={() => sortingHandler(header)}>{header.name}{claret}</th>
+        return <th key={header.name} onClick={() => sortingHandler(header)}>{header.name}{claret}</th>
     })
-    const countriesRows = countries.map((country: Country) => <CountryRow key={country.countryCode} country={country} />)
+    const countryRows = countries.map((country: Country) => <CountryRow key={country.countryCode} country={country} />)
 
     return (
-        <table style={{borderCollapse: 'collapse'}}>
+        <table className={styles.table}>
             <thead>
                 <tr>
                     {tableHeaders}
                 </tr>
             </thead>
             <tbody>
-                {countriesRows}
+                {countryRows}
             </tbody>
         </table>
     )

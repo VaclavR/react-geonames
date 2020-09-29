@@ -1,15 +1,24 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useStore } from '../store/store'
-import Search from '../components/Search'
+import Filters from '../components/Filters'
 import Countries from '../components/Countries'
+import Pagination from '../components/Pagination'
 import { Country } from '../interfaces'
 
 const Landing = (): JSX.Element => {
     const [state, dispatch] = useStore()
-    const stateCountries: Country[] = state.countries as Country[]
+    const countries = state.filteredCountries as Country[]
+    const currentPage = state.currentPage as number
+    const countriesPerPage = state.countriesPerPage as number
+    const [sortDirectionDesc, setSortDirection] = useState(false)
+    const [header, setHeader] = useState({})
+
+    function saveSortingValues(field: Record<string, string>, direction: boolean) {
+        setSortDirection(direction)
+        setHeader(field)
+    }
 
     useEffect(() => {
-        console.log('useEffect')
         // fetch('http:
         //api.geonames.org/countryInfoJSON?username=vencator')
         //     .then(response => response.json())
@@ -31,15 +40,21 @@ const Landing = (): JSX.Element => {
                 for (const key in data) {
                     dataArray = data[key]
                 }
-                dispatch('SET_COUNTRIES', dataArray)
+                dispatch('SET_ALL_COUNTRIES', dataArray)
+                dispatch('SET_ALL_VISIBLE_COUNTRIES', dataArray)
+                dispatch('PAGINATE_COUNTRIES', 1)
             })
     }, [])
-    const countries = stateCountries.length ? <Countries countries={[...stateCountries]} /> : null
-    console.log('landing render')
+
+    const paginate = (pageNumber: number) => {
+        dispatch('PAGINATE_COUNTRIES', pageNumber)
+    }
+
     return (
         <React.Fragment>
-            <Search />
-            {countries}
+            <Pagination postsPerPage={countriesPerPage} totalPosts={countries.length} currentPage={currentPage} paginate={paginate} />
+            <Filters header={header} sortDirectionDesc={sortDirectionDesc} />
+            <Countries saveSortingValues={saveSortingValues} />
         </React.Fragment>
     )
 }

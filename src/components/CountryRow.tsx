@@ -1,6 +1,6 @@
 import React from 'react'
 import {Country} from '../interfaces'
-import CSS from 'csstype';
+import CSS from 'csstype'
 
 interface CountryProps {
     country: Country
@@ -8,8 +8,8 @@ interface CountryProps {
 const tdStyles: CSS.Properties = {
     paddingRight: '10px',
 }
-const CountryRow = (props: CountryProps): JSX.Element => {
 
+const CountryRow = (props: CountryProps): JSX.Element => {
     return (
         <tr>
             <td style={tdStyles}>{props.country.countryCode}</td>
@@ -17,7 +17,8 @@ const CountryRow = (props: CountryProps): JSX.Element => {
             <td style={tdStyles}>{props.country.capital}</td>
             <td style={tdStyles}>{props.country.continentName}</td>
             <td style={tdStyles}>{props.country.population}</td>
-            <td style={tdStyles}>{props.country.areaInSqKm}</td>
+            <td style={tdStyles}>{+props.country.areaInSqKm} km<sup>2</sup></td>
+            <td style={tdStyles}>{props.country.density} &#50883;/km<sup>2</sup></td>
         </tr>
     )
 }

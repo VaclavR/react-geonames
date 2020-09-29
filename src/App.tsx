@@ -1,9 +1,9 @@
 import React from 'react'
-import Landing from './containers/Landing'
+import Landing from './containers/CountriesControl'
 
 const App = (): JSX.Element => {
     return (
-        <div>
+        <div className='dark-theme'>
             <Landing />
         </div>
     )
