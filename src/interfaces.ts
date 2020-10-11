@@ -33,23 +33,23 @@ export interface Select {
 }
 
 export interface FilterConfig {
-    type: string,
     value: string
+    type?: string,
 }
 
 export interface FilterProperties {
     query: FilterConfig,
     continent: FilterConfig
-    sortProperties: {header: Record<string, string>, sortDirectionDesc: boolean}
+    sortProperties: {header: TableHeader, sortDirectionDesc: boolean}
 }
 
 export interface FiltersProps {
-    header: Record<string, string>,
+    header: TableHeader,
     sortDirectionDesc: boolean
 }
 
 export interface CountriesProps {
-    saveSortingValues: (arg1: Record<string, string>, arg2: boolean) => void
+    saveSortingValues: (arg1: TableHeader, arg2: boolean) => void
 }
 
 export interface PaginationProps {
@@ -57,4 +57,48 @@ export interface PaginationProps {
     totalPosts: number
     currentPage: number
     paginate: (arg1: number) => void
+}
+
+export interface BackdropProps {
+    isVisible: boolean
+    clicked: () => void
+}
+
+export interface TopbarProps {
+    isOpen: boolean
+    // closedHandler: () => void
+    drawerToggleClicked: () => void
+}
+
+export interface DrawerToggleProps {
+    clicked: () => void
+}
+
+export interface SideDrawerProps {
+    isOpen: boolean
+    closedHandler: () => void
+}
+
+export interface Action {
+    type: string
+    countries?: Country[]
+    currentPage?: number
+    filterProperties?: FilterProperties
+    payload?: Record<string, unknown>
+}
+
+export interface State {
+    countries: Country[]
+    filteredCountries: Country[]
+    paginatedCountries: Country[]
+    currentPage: number
+    countriesPerPage: number
+}
+
+export interface TableHeader {
+    name: string,
+    propName: string,
+    type: string,
+    width?: string,
+    tooltip?: string
 }

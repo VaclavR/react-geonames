@@ -1,19 +1,21 @@
 import React, { useState } from 'react'
 import CountryRow from './CountryRow'
-import { useStore } from '../store/store'
-import { Country, CountriesProps } from '../interfaces'
+import { useDispatch, useSelector } from 'react-redux'
+import { Country, CountriesProps, State, TableHeader } from '../interfaces'
 import styles from './Countries.css'
+import { sortCountries } from '../store/actions'
 
-const tableHeadersData = [
+const tableHeadersData: TableHeader[] = [
     {
         name: 'Code',
         propName: 'countryCode',
-        type: 'string'
+        type: 'string',
     },
     {
-        name: 'Country Name',
+        name: 'Country',
         propName: 'countryName',
-        type: 'string'
+        type: 'string',
+        width: '150px'
     },
     {
         name: 'Capital',
@@ -31,32 +33,46 @@ const tableHeadersData = [
         type: 'number'
     },
     {
-        name: 'Area',
+        name: 'Cur.',
+        propName: 'currencyCode',
+        type: 'string',
+        tooltip: 'Currency'
+    },
+    {
+        name: 'Land Mass',
         propName: 'areaInSqKm',
-        type: 'number'
+        type: 'number',
     },
     {
         name: 'Density',
         propName: 'density',
-        type: 'number'
+        type: 'number',
     }
 ]
 
 const Countries = (props: CountriesProps): JSX.Element => {
-    const [state, dispatch] = useStore()
-    const countries = state.paginatedCountries as Country[]
+    const dispatch = useDispatch()
+    const countries = useSelector((state: State) => state.paginatedCountries as Country[])
     const [sortDirectionDesc, setSortDirection] = useState(false)
     const [sortField, setSortField] = useState('countryCode')
 
-    const sortingHandler = (header: Record<string, string>): void => {
+    const sortingHandler = (header: TableHeader): void => {
         setSortField(header.propName)
-        dispatch('SORT_COUNTRIES', {header, sortDirectionDesc})
+        dispatch(sortCountries({ header, sortDirectionDesc }))
         setSortDirection(!sortDirectionDesc)
         props.saveSortingValues(header, sortDirectionDesc)
     }
     const tableHeaders = tableHeadersData.map((header) => {
         const claret = header.propName === sortField ? sortDirectionDesc ? '↑' : '↓' : '\u00A0\u00A0'
-        return <th key={header.name} onClick={() => sortingHandler(header)}>{header.name}{claret}</th>
+        return (
+            <th
+                key={header.name}
+                style={{ minWidth: header.width }}
+                title={header.tooltip}
+                onClick={() => sortingHandler(header)}>
+                {header.name}{claret}
+            </th>
+        )
     })
     const countryRows = countries.map((country: Country) => <CountryRow key={country.countryCode} country={country} />)
 

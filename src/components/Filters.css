@@ -1,0 +1,9 @@
+.fieldset {
+    border: none;
+}
+
+.fieldset input, .fieldset select {
+    margin-right: 2px;
+    border: 1px solid var(--primary-dark-color);
+    outline: none;
+}

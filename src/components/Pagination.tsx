@@ -17,10 +17,8 @@ const Pagination = ({ postsPerPage, totalPosts, currentPage, paginate }: Paginat
                 {pageNumbers.map(pageNumber => {
                     const pageItemClass = currentPage === pageNumber ? styles.active : ''
                     return (
-                        <li key={pageNumber} className={pageItemClass}>
-                            <a onClick={() => paginate(pageNumber)}>
-                                {pageNumber}
-                            </a>
+                        <li key={pageNumber} className={pageItemClass} onClick={() => paginate(pageNumber)}>
+                            {pageNumber}
                         </li>
                     )})}
             </ul>

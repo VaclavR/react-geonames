@@ -24,7 +24,8 @@ module.exports = {
     'rules': {
         'indent': [
             'error',
-            4
+            4,
+            { 'SwitchCase': 1 }
         ],
         'linebreak-style': [
             'error',
@@ -38,6 +39,7 @@ module.exports = {
             'error',
             'never'
         ],
+        'object-curly-spacing': ['error', 'always'],
         '@typescript-eslint/no-unused-vars': 'off',
         'no-console': ['error', { allow: ['warn', 'error'] }]
     }

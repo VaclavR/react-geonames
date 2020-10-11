@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { useStore, Dispatch } from '../store/store'
-import { InputAttributes, SelectOption, Country, FiltersProps } from '../interfaces'
+import { useDispatch, useSelector } from 'react-redux'
+import { InputAttributes, SelectOption, Country, FiltersProps, State } from '../interfaces'
 import Input from './formElements/Input'
 import Select from './formElements/Select'
+import { filterCountries } from '../store/actions'
+import styles from './Filters.css'
 
-const selectOptions: SelectOption[] = [{value: '', name: 'Select a Continent...'}]
+const selectOptions: SelectOption[] = [{ value: '', name: 'Select a Continent...' }]
 
-const Filters = ({header, sortDirectionDesc}: FiltersProps): JSX.Element => {
-    const [state, dispatch]: [any, Dispatch] = useStore()
+const Filters = ({ header, sortDirectionDesc }: FiltersProps): JSX.Element => {
+    const dispatch = useDispatch()
+    const countries = useSelector((state: State) => state.countries)
     const [queryFilter, setQueryFilter] = useState('')
     const [continentFilter, setContinentFilter] = useState('')
 
@@ -26,43 +29,43 @@ const Filters = ({header, sortDirectionDesc}: FiltersProps): JSX.Element => {
     const inputAttributes: InputAttributes = {
         type: 'text',
         name: 'search',
-        placeholder: 'Search by Country Name',
+        placeholder: 'Search',
         autoComplete: 'off'
     }
 
     function handleSubmit(queryValue: string, continentValue: string) {
-        dispatch('FILTER_COUNTRIES', {
-            query: {type: 'countryName', value: queryValue},
-            continent: {type: 'continentName', value: continentValue },
+        dispatch(filterCountries({
+            query: { value: queryValue },
+            continent: { type: 'continentName', value: continentValue },
             sortProperties: {
                 header, sortDirectionDesc
             }
-        })
+        }))
     }
 
-    useEffect(() => {
-        // get all continents from countries array - overkill - simple hardcoded array should be enough
-        if (state.countries.length) {
-            const continents = new Set([...state.countries].map((country: Country) => country.continentName))
-            continents.forEach((continent) => {
-                selectOptions.push({name: continent, value: continent})
-            })
-        }
-    }, [state.countries])
+    // get all continents from countries array - overkill - simple hardcoded array should be enough
+    if (countries.length && selectOptions.length === 1) {
+        const continents = new Set([...countries].map((country: Country) => country.continentName))
+        continents.forEach((continent) => {
+            selectOptions.push({ name: continent, value: continent })
+        })
+    }
 
     return (
         <section>
             <form>
-                <Input
-                    inputAttributes={inputAttributes}
-                    onChangeHandler={handleSearchInput}
-                    value={queryFilter}
-                />
-                <Select
-                    options={selectOptions}
-                    onChangeHandler={handleSelect}
-                    value={continentFilter}
-                />
+                <fieldset className={styles.fieldset}>
+                    <Input
+                        inputAttributes={inputAttributes}
+                        onChangeHandler={handleSearchInput}
+                        value={queryFilter}
+                    />
+                    <Select
+                        options={selectOptions}
+                        onChangeHandler={handleSelect}
+                        value={continentFilter}
+                    />
+                </fieldset>
             </form>
         </section>
     )
