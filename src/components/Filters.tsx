@@ -6,25 +6,34 @@ import Select from './formElements/Select'
 import { filterCountries } from '../store/actions'
 import styles from './Filters.css'
 
-const selectOptions: SelectOption[] = [{ value: '', name: 'Select a Continent...' }]
+const continentSelectOptions: SelectOption[] = [{ value: '', name: 'All Continents' }]
+const currenciesSelectOptions: SelectOption[] = [{ value: '', name: 'All Currencies' }]
 
 const Filters = ({ header, sortDirectionDesc }: FiltersProps): JSX.Element => {
     const dispatch = useDispatch()
     const countries = useSelector((state: State) => state.countries)
     const [queryFilter, setQueryFilter] = useState('')
     const [continentFilter, setContinentFilter] = useState('')
+    const [currenciesFilter, setCurrenciesFilter] = useState('')
 
     const handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const value = event.target.value
-        handleSubmit(value, continentFilter)
         setQueryFilter(value)
     }
 
-    const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+    const handleContinentSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         const value = event.target.value
-        handleSubmit(queryFilter, value)
         setContinentFilter(value)
     }
+
+    const handleCurrenciesSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+        const value = event.target.value
+        setCurrenciesFilter(value)
+    }
+
+    useEffect(() => {
+        handleSubmit()
+    }, [queryFilter, continentFilter, currenciesFilter])
 
     const inputAttributes: InputAttributes = {
         type: 'text',
@@ -33,10 +42,11 @@ const Filters = ({ header, sortDirectionDesc }: FiltersProps): JSX.Element => {
         autoComplete: 'off'
     }
 
-    function handleSubmit(queryValue: string, continentValue: string) {
+    function handleSubmit() {
         dispatch(filterCountries({
-            query: { value: queryValue },
-            continent: { type: 'continentName', value: continentValue },
+            query: { value: queryFilter },
+            continent: { type: 'continentName', value: continentFilter },
+            currency: { type: 'currencyCode', value: currenciesFilter },
             sortProperties: {
                 header, sortDirectionDesc
             }
@@ -44,16 +54,24 @@ const Filters = ({ header, sortDirectionDesc }: FiltersProps): JSX.Element => {
     }
 
     // get all continents from countries array - overkill - simple hardcoded array should be enough
-    if (countries.length && selectOptions.length === 1) {
+    if (countries.length && continentSelectOptions.length === 1) {
         const continents = new Set([...countries].map((country: Country) => country.continentName))
         continents.forEach((continent) => {
-            selectOptions.push({ name: continent, value: continent })
+            continentSelectOptions.push({ name: continent, value: continent })
+        })
+    }
+
+    // get all currencies from countries array - overkill - simple hardcoded array should be enough
+    if (countries.length && currenciesSelectOptions.length === 1) {
+        const currencies = new Set([...countries].map((country: Country) => country.currencyCode))
+        currencies.forEach((currency) => {
+            currenciesSelectOptions.push({ name: currency, value: currency })
         })
     }
 
     return (
         <section>
-            <form>
+            <div>
                 <fieldset className={styles.fieldset}>
                     <Input
                         inputAttributes={inputAttributes}
@@ -61,12 +79,17 @@ const Filters = ({ header, sortDirectionDesc }: FiltersProps): JSX.Element => {
                         value={queryFilter}
                     />
                     <Select
-                        options={selectOptions}
-                        onChangeHandler={handleSelect}
+                        options={continentSelectOptions}
+                        onChangeHandler={handleContinentSelect}
                         value={continentFilter}
                     />
+                    <Select
+                        options={currenciesSelectOptions}
+                        onChangeHandler={handleCurrenciesSelect}
+                        value={currenciesFilter}
+                    />
                 </fieldset>
-            </form>
+            </div>
         </section>
     )
 }

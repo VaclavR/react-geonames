@@ -10,12 +10,12 @@ const tableHeadersData: TableHeader[] = [
         name: 'Code',
         propName: 'countryCode',
         type: 'string',
+        width: '75px'
     },
     {
         name: 'Country',
         propName: 'countryName',
-        type: 'string',
-        width: '150px'
+        type: 'string'
     },
     {
         name: 'Capital',
@@ -42,11 +42,13 @@ const tableHeadersData: TableHeader[] = [
         name: 'Land Mass',
         propName: 'areaInSqKm',
         type: 'number',
+        width: '116px'
     },
     {
         name: 'Density',
         propName: 'density',
         type: 'number',
+        width: '132px'
     }
 ]
 

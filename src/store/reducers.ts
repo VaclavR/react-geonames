@@ -42,7 +42,6 @@ function sortCountries(countries: Country[], payload: {header: TableHeader, sort
 
 function filterCountries(state: State, filterProperties: FilterProperties) {
     const countries = state.countries as Country []
-    console.log(filterProperties)
     const filteredCountries = countries.filter((country : Country) => {
         return (
             (
@@ -51,7 +50,10 @@ function filterCountries(state: State, filterProperties: FilterProperties) {
                 country.capital.toLowerCase().includes(filterProperties.query.value.toLowerCase()) ||
                 country.currencyCode.toLowerCase().includes(filterProperties.query.value.toLowerCase()) ||
                 country.countryCode.toLowerCase().includes(filterProperties.query.value.toLowerCase())
-            ) && country[filterProperties.continent.type as string].toLowerCase() === filterProperties.continent.value.toLowerCase())
+            )
+            && country[filterProperties.continent.type as string].toLowerCase().includes(filterProperties.continent.value.toLowerCase())
+            && country[filterProperties.currency.type as string].toLowerCase().includes(filterProperties.currency.value.toLowerCase())
+        )
     })
     return sortCountries(filteredCountries, { header: filterProperties.sortProperties.header, sortDirectionDesc: filterProperties.sortProperties.sortDirectionDesc })
 }

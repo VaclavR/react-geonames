@@ -15,8 +15,8 @@ const CountryRow = (props: CountryProps): JSX.Element => {
             <td>{props.country.continentName}</td>
             <td>{props.country.population}</td>
             <td>{props.country.currencyCode}</td>
-            <td style={{ whiteSpace: 'nowrap' }}>{+props.country.areaInSqKm} km<sup>2</sup></td>
-            <td style={{ whiteSpace: 'nowrap' }}>{props.country.density} &#50883;/km<sup>2</sup></td>
+            <td>{+props.country.areaInSqKm} km<sup>2</sup></td>
+            <td>{props.country.density} &#50883;/km<sup>2</sup></td>
         </tr>
     )
 }

@@ -39,7 +39,8 @@ export interface FilterConfig {
 
 export interface FilterProperties {
     query: FilterConfig,
-    continent: FilterConfig
+    continent: FilterConfig,
+    currency: FilterConfig,
     sortProperties: {header: TableHeader, sortDirectionDesc: boolean}
 }
 
