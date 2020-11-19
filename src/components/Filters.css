@@ -1,9 +1,13 @@
 .fieldset {
     border: none;
+    display: flex;
 }
 
-.fieldset input, .fieldset select {
+.fieldset input:not([type="range"]), .fieldset select {
     margin-right: 2px;
     border: 1px solid var(--primary-dark-color);
-    outline: none;
+}
+
+.range {
+    width: 550px;
 }

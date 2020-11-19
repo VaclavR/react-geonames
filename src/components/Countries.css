@@ -1,6 +1,7 @@
 .table {
     border-collapse: collapse;
-    table-layout:fixed;
+    table-layout: fixed;
+    width: 916px;
 }
 
 .table th {

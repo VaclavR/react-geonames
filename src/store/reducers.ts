@@ -44,15 +44,19 @@ function filterCountries(state: State, filterProperties: FilterProperties) {
     const countries = state.countries as Country []
     const filteredCountries = countries.filter((country : Country) => {
         return (
+            // search query
             (
-                country.countryName.toLowerCase().includes(filterProperties.query.value.toLowerCase()) ||
-                country.continentName.toLowerCase().includes(filterProperties.query.value.toLowerCase()) ||
-                country.capital.toLowerCase().includes(filterProperties.query.value.toLowerCase()) ||
-                country.currencyCode.toLowerCase().includes(filterProperties.query.value.toLowerCase()) ||
-                country.countryCode.toLowerCase().includes(filterProperties.query.value.toLowerCase())
+                country.countryName.toLowerCase().includes(filterProperties.query.toLowerCase()) ||
+                country.continentName.toLowerCase().includes(filterProperties.query.toLowerCase()) ||
+                country.capital.toLowerCase().includes(filterProperties.query.toLowerCase()) ||
+                // country.currencyCode.toLowerCase().includes(filterProperties.query.toLowerCase()) ||
+                country.countryCode.toLowerCase().includes(filterProperties.query.toLowerCase())
             )
-            && country[filterProperties.continent.type as string].toLowerCase().includes(filterProperties.continent.value.toLowerCase())
-            && country[filterProperties.currency.type as string].toLowerCase().includes(filterProperties.currency.value.toLowerCase())
+            // population
+            && +country.population >= +filterProperties.popSlider[0] && +country.population <= +filterProperties.popSlider[1]
+            // other filters
+            && country.continentName.toLowerCase().includes(filterProperties.continent.toLowerCase())
+            && country.currencyCode.toLowerCase().includes(filterProperties.currency.toLowerCase())
         )
     })
     return sortCountries(filteredCountries, { header: filterProperties.sortProperties.header, sortDirectionDesc: filterProperties.sortProperties.sortDirectionDesc })

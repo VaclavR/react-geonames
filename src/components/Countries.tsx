@@ -10,7 +10,7 @@ const tableHeadersData: TableHeader[] = [
         name: 'Code',
         propName: 'countryCode',
         type: 'string',
-        width: '75px'
+        width: '54px'
     },
     {
         name: 'Country',
@@ -20,23 +20,27 @@ const tableHeadersData: TableHeader[] = [
     {
         name: 'Capital',
         propName: 'capital',
-        type: 'string'
+        type: 'string',
+        width: '130px'
     },
     {
         name: 'Continent',
         propName: 'continentName',
-        type: 'string'
+        type: 'string',
+        width: '120px'
     },
     {
         name: 'Population',
         propName: 'population',
-        type: 'number'
+        type: 'number',
+        width: '100px'
     },
     {
         name: 'Cur.',
         propName: 'currencyCode',
         type: 'string',
-        tooltip: 'Currency'
+        tooltip: 'Currency',
+        width: '44px'
     },
     {
         name: 'Land Mass',
@@ -69,7 +73,7 @@ const Countries = (props: CountriesProps): JSX.Element => {
         return (
             <th
                 key={header.name}
-                style={{ minWidth: header.width }}
+                style={{ width: header.width }}
                 title={header.tooltip}
                 onClick={() => sortingHandler(header)}>
                 {header.name}{claret}

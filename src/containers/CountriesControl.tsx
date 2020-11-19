@@ -26,8 +26,8 @@ const CountriesControl = (): JSX.Element => {
 
     return (
         <div className={styles.countriesControl}>
-            <Pagination postsPerPage={countriesPerPage} totalPosts={countriesLength} currentPage={currentPage} paginate={paginate} />
             <Filters header={header} sortDirectionDesc={sortDirectionDesc} />
+            <Pagination postsPerPage={countriesPerPage} totalPosts={countriesLength} currentPage={currentPage} paginate={paginate} />
             <Countries saveSortingValues={saveSortingValues} />
         </div>
     )

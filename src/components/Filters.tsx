@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { InputAttributes, SelectOption, Country, FiltersProps, State } from '../interfaces'
 import Input from './formElements/Input'
 import Select from './formElements/Select'
+import Range from './formElements/Range'
 import { filterCountries } from '../store/actions'
 import styles from './Filters.css'
 
@@ -12,41 +13,55 @@ const currenciesSelectOptions: SelectOption[] = [{ value: '', name: 'All Currenc
 const Filters = ({ header, sortDirectionDesc }: FiltersProps): JSX.Element => {
     const dispatch = useDispatch()
     const countries = useSelector((state: State) => state.countries)
-    const [queryFilter, setQueryFilter] = useState('')
-    const [continentFilter, setContinentFilter] = useState('')
-    const [currenciesFilter, setCurrenciesFilter] = useState('')
+    const [filters, setFilters] = useState(
+        {
+            query: '',
+            continent: '',
+            currency: '',
+            popSlider: [0, 10]
+        }
+    )
 
     const handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const value = event.target.value
-        setQueryFilter(value)
+        setFilters({ ...filters, query: value })
     }
 
     const handleContinentSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         const value = event.target.value
-        setContinentFilter(value)
+        setFilters({ ...filters, continent: value })
     }
 
     const handleCurrenciesSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         const value = event.target.value
-        setCurrenciesFilter(value)
+        setFilters({ ...filters, currency: value })
+    }
+
+    const handlePopRange = (event: React.ChangeEvent<unknown>, value: number[]): void => {
+        setFilters({ ...filters, popSlider: value })
     }
 
     useEffect(() => {
         handleSubmit()
-    }, [queryFilter, continentFilter, currenciesFilter])
+    }, [filters])
 
-    const inputAttributes: InputAttributes = {
+    const queryAttributes: InputAttributes = {
+        value: filters.query,
         type: 'text',
-        name: 'search',
         placeholder: 'Search',
         autoComplete: 'off'
     }
 
+    const rangeAttributes: InputAttributes = {
+        type: 'range',
+        min: '0',
+        max: '1400000000',
+        step: '1000000'
+    }
+
     function handleSubmit() {
         dispatch(filterCountries({
-            query: { value: queryFilter },
-            continent: { type: 'continentName', value: continentFilter },
-            currency: { type: 'currencyCode', value: currenciesFilter },
+            ...filters,
             sortProperties: {
                 header, sortDirectionDesc
             }
@@ -61,11 +76,13 @@ const Filters = ({ header, sortDirectionDesc }: FiltersProps): JSX.Element => {
         })
     }
 
-    // get all currencies from countries array - overkill - simple hardcoded array should be enough
+    // get all currencies from countries array
     if (countries.length && currenciesSelectOptions.length === 1) {
         const currencies = new Set([...countries].map((country: Country) => country.currencyCode))
         currencies.forEach((currency) => {
-            currenciesSelectOptions.push({ name: currency, value: currency })
+            if (currency.length) {
+                currenciesSelectOptions.push({ name: currency, value: currency })
+            }
         })
     }
 
@@ -74,22 +91,27 @@ const Filters = ({ header, sortDirectionDesc }: FiltersProps): JSX.Element => {
             <div>
                 <fieldset className={styles.fieldset}>
                     <Input
-                        inputAttributes={inputAttributes}
+                        inputAttributes={queryAttributes}
                         onChangeHandler={handleSearchInput}
-                        value={queryFilter}
                     />
                     <Select
                         options={continentSelectOptions}
                         onChangeHandler={handleContinentSelect}
-                        value={continentFilter}
+                        value={filters.continent}
                     />
                     <Select
                         options={currenciesSelectOptions}
                         onChangeHandler={handleCurrenciesSelect}
-                        value={currenciesFilter}
+                        value={filters.currency}
+                    />
+                    <Range
+                        inputAttributes={rangeAttributes}
+                        onChangeHandler={handlePopRange}
+                        sliderValue={filters.popSlider}
                     />
                 </fieldset>
             </div>
+
         </section>
     )
 }

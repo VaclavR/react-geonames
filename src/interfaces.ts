@@ -13,10 +13,12 @@ export interface InputAttributes {
 }
 
 export interface Input {
-    value: string
     inputAttributes: InputAttributes
-    name?: string
-    onChangeHandler?(event: React.ChangeEvent<HTMLInputElement>): void
+    onChangeHandler?(event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<unknown>, value?: number | number[]): void
+}
+
+export interface Range extends Input {
+    sliderValue: number[]
 }
 
 export interface SelectOption {
@@ -38,9 +40,10 @@ export interface FilterConfig {
 }
 
 export interface FilterProperties {
-    query: FilterConfig,
-    continent: FilterConfig,
-    currency: FilterConfig,
+    query: string,
+    continent: string,
+    currency: string,
+    popSlider: number[],
     sortProperties: {header: TableHeader, sortDirectionDesc: boolean}
 }
 
