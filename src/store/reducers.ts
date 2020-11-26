@@ -53,7 +53,7 @@ function filterCountries(state: State, filterProperties: FilterProperties) {
                 country.countryCode.toLowerCase().includes(filterProperties.query.toLowerCase())
             )
             // population
-            && +country.population >= +filterProperties.popSlider[0] && +country.population <= +filterProperties.popSlider[1]
+            // && +country.population >= +filterProperties.popSlider[0] && +country.population <= +filterProperties.popSlider[1]
             // other filters
             && country.continentName.toLowerCase().includes(filterProperties.continent.toLowerCase())
             && country.currencyCode.toLowerCase().includes(filterProperties.currency.toLowerCase())

@@ -104,11 +104,11 @@ const Filters = ({ header, sortDirectionDesc }: FiltersProps): JSX.Element => {
                         onChangeHandler={handleCurrenciesSelect}
                         value={filters.currency}
                     />
-                    <Range
+                    {/* <Range
                         inputAttributes={rangeAttributes}
                         onChangeHandler={handlePopRange}
                         sliderValue={filters.popSlider}
-                    />
+                    /> */}
                 </fieldset>
             </div>
 
