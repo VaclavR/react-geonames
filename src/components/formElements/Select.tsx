@@ -5,6 +5,7 @@ const Select = (props: Select): JSX.Element => {
     const options: JSX.Element[] = props.options.map((option) => <option key={option.value} value={option.value}>{option.name}</option>)
     return (
         <select
+            value={props.value}
             {...props.inputAttributes}
             onChange={props.onChangeHandler}
         >{options}</select>

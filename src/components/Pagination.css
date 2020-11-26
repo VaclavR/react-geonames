@@ -5,16 +5,12 @@
 .pagination li {
     display: inline-block;
     margin-right: 2px;
+    padding: 5px;
+    border: 1px solid var(--secondary-dark-color);
+    cursor: pointer
 }
 
 .pagination li:hover,
 .pagination li.active {
-    background-color: lightgray;
-}
-
-.pagination a {
-    display: block;
-    padding: 5px;
-    border: 1px solid grey;
-    cursor: pointer
+    background-color: var(--secondary-light-color);
 }

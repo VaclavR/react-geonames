@@ -1,11 +1,29 @@
 .table {
     border-collapse: collapse;
-    border: 1px solid black;
+    table-layout: fixed;
+    width: 916px;
 }
 
 .table th {
     text-align: left;
-    padding-right: 5px;
-    border-bottom: 1px solid black;
-    cursor: pointer
+    padding: 4px 5px;
+    cursor: pointer;
+}
+
+.table td {
+    padding: 4px 5px;
+    background-color: var(--secondary-light-color);
+}
+
+.flag {
+    width: 25px;
+    display: inline-block;
+    margin: 0 5px;
+    background-color: inherit;
+}
+
+.flag img {
+    padding-top: 2px;
+    height: 14px;
+    background-color: inherit;
 }

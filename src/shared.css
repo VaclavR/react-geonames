@@ -1,12 +1,7 @@
-:root {
-    /* Set the deafult values */
-    --overall-text-color: black;
-    --overall-background-color: white;
-}
 
 * {
-    color: var(--overall-text-color);
-    background-color: var(--overall-bg-color);
+    color: var(--primary-dark-color, black);
+    background-color: var(--primary-light-color, white);
 }
 
 body {
@@ -16,4 +11,8 @@ body {
 
 section, nav {
     margin-bottom: 10px
+}
+
+sup {
+    background-color: inherit;
 }

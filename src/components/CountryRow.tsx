@@ -1,24 +1,22 @@
 import React from 'react'
-import {Country} from '../interfaces'
-import CSS from 'csstype'
+import { Country } from '../interfaces'
+import styles from './Countries.css'
 
 interface CountryProps {
     country: Country
-}
-const tdStyles: CSS.Properties = {
-    paddingRight: '10px',
 }
 
 const CountryRow = (props: CountryProps): JSX.Element => {
     return (
         <tr>
-            <td style={tdStyles}>{props.country.countryCode}</td>
-            <td style={tdStyles}>{props.country.countryName}</td>
-            <td style={tdStyles}>{props.country.capital}</td>
-            <td style={tdStyles}>{props.country.continentName}</td>
-            <td style={tdStyles}>{props.country.population}</td>
-            <td style={tdStyles}>{+props.country.areaInSqKm} km<sup>2</sup></td>
-            <td style={tdStyles}>{props.country.density} &#50883;/km<sup>2</sup></td>
+            <td>{props.country.countryCode}</td>
+            <td><span className={styles.flag}><img src={props.country.flag}/></span>{props.country.countryName}</td>
+            <td>{props.country.capital}</td>
+            <td>{props.country.continentName}</td>
+            <td>{props.country.population}</td>
+            <td>{props.country.currencyCode}</td>
+            <td>{+props.country.areaInSqKm} km<sup>2</sup></td>
+            <td>{props.country.density} &#50883;/km<sup>2</sup></td>
         </tr>
     )
 }
