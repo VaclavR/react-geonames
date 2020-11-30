@@ -1,7 +1,7 @@
 import React from 'react'
 import NavItems from './NavItems'
 import Backdrop from './Backdrop'
-import styles from './SideDrawer.css'
+import styles from './Sidedrawer.css'
 import { SideDrawerProps } from '../../interfaces'
 
 const Sidedrawer = (props: SideDrawerProps): JSX.Element => {
